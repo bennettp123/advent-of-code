@@ -30,3 +30,29 @@ class Tester(unittest.TestCase):
         actual = box.paper_needed(w, l, h)
         self.assertEqual(expected, actual)
 
+
+    def test_smallest_side_perimeter(self):
+        w = 2
+        h = 3
+        l = 4
+        smallest_perimiter = box.smallest_side_perimeter(w, l, h)
+        self.assertEqual(smallest_perimiter, 10)
+
+
+    def test_box_volume(self):
+        w = 2
+        h = 3
+        l = 4
+        volume = box.box_volume(w, l, h)
+        self.assertEqual(volume, 24)
+
+
+    def test_ribbon_needed(self):
+        w = 2
+        h = 3
+        l = 4
+        expected = 10 + 24
+        actual = box.ribbon_needed(w, l, h)
+        self.assertEqual(expected, actual)
+
+
