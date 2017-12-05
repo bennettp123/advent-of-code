@@ -20,10 +20,13 @@ if __name__ == '__main__':
         # jump around
         while True:
             target = pos + buf[pos]
-            buf[pos] = buf[pos] + 1
+            if buf[pos] < 3:
+                buf[pos] = buf[pos] + 1
+            else:
+                buf[pos] = buf[pos] - 1
             pos = target
             jumps = jumps + 1
 
     except IndexError:
-        print('part1: jumped out of list in {0} jumps'.format(jumps))
+        print('part2: jumped out of list in {0} jumps'.format(jumps))
 
