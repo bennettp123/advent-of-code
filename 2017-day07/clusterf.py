@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 
-ids = set()
 nodes = {}
 
 
@@ -40,7 +39,6 @@ class Node(object):
 
 def add_prog(line):
     global graph
-    global ids
     try:
         parent, children = line.split(' -> ')
         children = children.split(', ')
@@ -53,9 +51,6 @@ def add_prog(line):
 
     parent = parent.strip()
     children = [c.strip() for c in children]
-
-    ids.add(parent)
-    ids.update(children)
 
     nodes[parent] = Node(parent, weight, children)
 
