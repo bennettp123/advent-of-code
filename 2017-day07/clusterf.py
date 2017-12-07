@@ -60,10 +60,14 @@ def add_prog(line):
     nodes[parent] = Node(parent, weight, children)
 
 
+def parent_nodes():
+    return (nodes[c] for c in nodes if not nodes[c].lookup_parents())
+
+
 def unbalanced_nodes():
     '''returns ALL unbalanced nodes'''
     nonleaves = (nodes[c] for c in nodes if nodes[c].children)
-    return [n for n in nonleaves if not n.is_balanced()]
+    return (n for n in nonleaves if not n.is_balanced())
 
 
 if __name__ == '__main__':
@@ -71,9 +75,7 @@ if __name__ == '__main__':
         for line in f:
             add_prog(line)
 
-    parents = [(k, v) for k, v in nodes.iteritems() if not v.lookup_parents()]
-
-    for p in parents:
+    for p in parent_nodes():
         print('part 1: parent found: {0}'.format(repr(p)))
 
     for node in unbalanced_nodes():
