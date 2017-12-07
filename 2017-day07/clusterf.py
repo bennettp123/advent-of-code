@@ -61,6 +61,7 @@ def add_prog(line):
 
 
 def check_for_unbalanced_nodes():
+    '''prints ALL unbalanced nodes'''
     for node in (nodes[c] for c in nodes if nodes[c].children):
         if not node.is_balanced():
             print('part 2: unbalanced node found: {0}'.format(repr(node)))
