@@ -60,11 +60,10 @@ def add_prog(line):
     nodes[parent] = Node(parent, weight, children)
 
 
-def check_for_unbalanced_nodes():
-    '''prints ALL unbalanced nodes'''
-    for node in (nodes[c] for c in nodes if nodes[c].children):
-        if not node.is_balanced():
-            print('part 2: unbalanced node found: {0}'.format(repr(node)))
+def unbalanced_nodes():
+    '''returns ALL unbalanced nodes'''
+    nonleaves = (nodes[c] for c in nodes if nodes[c].children)
+    return [n for n in nonleaves if not n.is_balanced()]
 
 
 if __name__ == '__main__':
@@ -77,7 +76,9 @@ if __name__ == '__main__':
     for p in parents:
         print('part 1: parent found: {0}'.format(repr(p)))
 
-    check_for_unbalanced_nodes()
+    for node in unbalanced_nodes():
+        print('part 2: unbalanced node found: {0}'.format(repr(node)))
+
 
     import pdb; pdb.set_trace()
 
