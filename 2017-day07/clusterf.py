@@ -61,13 +61,13 @@ def add_prog(line):
 
 
 def parent_nodes():
-    return (nodes[c] for c in nodes if not nodes[c].lookup_parents())
+    return [nodes[c] for c in nodes if not nodes[c].lookup_parents()]
 
 
 def unbalanced_nodes():
     '''returns ALL unbalanced nodes'''
     nonleaves = (nodes[c] for c in nodes if nodes[c].children)
-    return (n for n in nonleaves if not n.is_balanced())
+    return [n for n in nonleaves if not n.is_balanced()]
 
 
 if __name__ == '__main__':
