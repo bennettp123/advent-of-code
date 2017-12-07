@@ -6,33 +6,33 @@ nodes = {}
 
 class Node(object):
 
-    def __init__(self, name, weight, children):
+    def __init__(self, name, weight, child_names):
         self.name = name
         self.weight = int(weight)
-        self.children = children
+        self.child_names = child_names
 
-    def lookup_children(self):
-        return [nodes[c] for c in self.children if c in nodes]
+    def children(self):
+        return [nodes[c] for c in self.child_names if c in nodes]
 
-    def lookup_parents(self):
-        return [nodes[c] for c in nodes if self.name in nodes[c].children]
+    def parents(self):
+        return [nodes[c] for c in nodes if self.name in nodes[c].child_names]
 
     def is_balanced_shallow(self):
-        return len(set([c.weight for c in self.lookup_children()])) < 2
+        return len(set([c.weight for c in self.children()])) < 2
 
     def is_balanced_deep(self):
-        return len(set([c.lookup_tower_weight() for c in self.lookup_children()])) < 2
+        return len(set([c.tower_weight() for c in self.children()])) < 2
 
     def is_balanced(self):
         return self.is_balanced_deep()
 
-    def lookup_tower_weight(self):
-        return sum([c.lookup_tower_weight() for c in self.lookup_children()] + [self.weight])
+    def tower_weight(self):
+        return sum([c.tower_weight() for c in self.children()] + [self.weight])
 
     def __repr__(self):
         childstr = ''
-        for child in self.children:
-            childstr += '{0}({1}), '.format(nodes[child].name, nodes[child].lookup_tower_weight())
+        for child in self.child_names:
+            childstr += '{0}({1}), '.format(nodes[child].name, nodes[child].tower_weight())
         childstr = childstr.rstrip(', ')
         return 'Node(<{0}>: weight={1} children=[{2}])'.format(self.name, self.weight, childstr)
 
@@ -56,12 +56,12 @@ def add_prog(line):
 
 
 def parent_nodes():
-    return [nodes[c] for c in nodes if not nodes[c].lookup_parents()]
+    return [nodes[c] for c in nodes if not nodes[c].parents()]
 
 
 def unbalanced_nodes():
     '''returns ALL unbalanced nodes'''
-    nonleaves = (nodes[c] for c in nodes if nodes[c].children)
+    nonleaves = (nodes[c] for c in nodes if nodes[c].child_names)
     return [n for n in nonleaves if not n.is_balanced()]
 
 
