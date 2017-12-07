@@ -6,20 +6,20 @@ import re
 def turn_on(lights, a, b, c, d):
     for row in range(a, c+1):
         for col in range(b, d+1):
-            lights[row][col] = True
+            lights[row][col] += 1
     return lights
 
 def turn_off(lights, a, b, c, d):
     for row in range(a, c+1):
         for col in range(b, d+1):
-            lights[row][col] = False
+            lights[row][col] = max(0, lights[row][col] - 1)
     return lights
 
 
 def toggle(lights, a, b, c, d):
     for row in range(a, c+1):
         for col in range(b, d+1):
-            lights[row][col] = not lights[row][col]
+            lights[row][col] += 2
     return lights
 
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
             else:
                 raise Exception('bad op! {0}'.format(op))
 
-    num_lit = sum([lights[r].count(True) for r in range(1000)])
+    sum_lit = sum([sum(lights[r]) for r in range(1000)])
 
-    print('part 1: {0} lights lit'.format(num_lit))
+    print('part 2: total brightness is {0}'.format(sum_lit))
 
