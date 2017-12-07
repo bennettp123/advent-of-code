@@ -24,6 +24,9 @@ class Node(object):
     def is_balanced_deep(self):
         return len(set([c.lookup_tower_weight() for c in self.lookup_children()])) < 2
 
+    def is_balanced(self):
+        return self.is_balanced_deep()
+
     def lookup_tower_weight(self):
         return sum([c.lookup_tower_weight() for c in self.lookup_children()] + [self.weight])
 
@@ -59,8 +62,8 @@ def add_prog(line):
 
 def check_for_unbalanced_nodes():
     for node in (nodes[c] for c in nodes if nodes[c].children):
-        if not node.is_balanced_deep():
-            print('part 2: deeply unbalanced node found: {0}'.format(repr(node)))
+        if not node.is_balanced():
+            print('part 2: unbalanced node found: {0}'.format(repr(node)))
 
 
 if __name__ == '__main__':
