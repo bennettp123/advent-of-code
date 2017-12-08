@@ -19,7 +19,3 @@ mention ordering at all.
 
 The simple parser assumes all needed values are available when parsing, so
 we pre-process the input to ensure ordering.
-
-However, this does not work, and it seems we'll need to build an object graph
-similar to 2017 day 07.
-
