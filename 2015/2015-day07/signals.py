@@ -1,14 +1,20 @@
 #!/usr/bin/env python
 
+import re
 
 # singleton, flat dictionary of all signal values
 # name => signal
 signals = {}
 
+# TODO make this better
+regex = re.compile(r'((?P<in1>\d+|[a-z]+) )?((?P<op>AND|OR|NOT|LSHIFT|RSHIFT) )?(?P<in2>\d+|\w+) -> (\w+)')
+
 
 def parse_source(s):
     s = s.split()
     signal = None
+
+    # TODO use regex instead
 
     unary_operands = ('NOT')
     binary_operands = ('AND', 'OR', 'LSHIFT', 'RSHIFT')
@@ -30,20 +36,20 @@ def parse_source(s):
 
     def apply_unary(o, v):
         if o.strip() == 'NOT':
-            return (~ v) % (2**16)
+            return (~ v) & (2**16 - 1)
         else:
             raise ValueError('parse error!')
 
     def apply_binary(o, v1, v2):
         o = o.strip()
         if o == 'AND':
-            return (v1 & v2) & (2**16)
+            return (v1 & v2) & (2**16 - 1)
         elif o == 'OR':
-            return (v1 | v2) & (2**16)
+            return (v1 | v2) & (2**16 - 1)
         elif o == 'LSHIFT':
-            return (v1 << v2) & (2**16)
+            return (v1 << v2) & (2**16 - 1)
         elif o == 'RSHIFT':
-            return (v1 >> v2) & (2**16)
+            return (v1 >> v2) & (2**16 - 1)
         else:
             raise ValueError('parse error!')
 
@@ -71,7 +77,6 @@ def parse_source(s):
     return history.pop()
 
 
-
 def parse_line(line, noop=False):
     '''parse a line of input, create a Node object, and append it to nodes'''
     global signals
@@ -85,13 +90,25 @@ def parse_all(lines):
     '''input may not be in correct order'''
     lines.reverse()
 
+    def is_int(num):
+        try:
+            foo = int(num)
+            return True
+        except ValueError:
+            return False
+
+    def connected(inputs):
+        return not [i for i in inputs if not (is_int(i) or i in signals)]
+
+
     while lines:
         line = lines.pop()
-        try:
+        groups = regex.match(line).groupdict()
+        inputs = [x for x in [groups['in1'], groups['in2']] if x is not None]
+        if connected(inputs):
             parse_line(line)
-        except KeyError:
-            # caused by out-of-order lines
-            # send it back to the list to try again later
+        else:
+            # check again later
             lines.insert(0, line)
 
 
