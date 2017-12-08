@@ -123,7 +123,7 @@ if __name__ == '__main__':
 
     parse_all(lines)
 
-    # part 1: find value of a
-    print('part 1: a value: {0}'.format(signals['a']))
+    # part 2: find value of a, with new input for b
+    print('part 2: a value: {0}'.format(signals['a']))
 
 
