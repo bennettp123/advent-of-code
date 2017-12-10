@@ -19,3 +19,11 @@ mention ordering at all.
 
 The simple parser assumes all needed values are available when parsing, so
 we pre-process the input to ensure ordering.
+
+The final solution uses a mix of regular expressions for dependency ordering,
+and substring comparison for the actual logic. A more elegant solution might
+use regex for everything, but I've left it with a mix becuase:
+
+1. it works, and
+2. it permits expressions like `x AND NOT y` or `x AND y OR z`, which are
+   undefined in the requirements.
