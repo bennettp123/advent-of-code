@@ -1,7 +1,8 @@
 # 2015 day 7
 
-The example in the instructions imply that the input is ordered such that
-dependencies are set on lines above.
+The example in the instructions implies that input is ordered such that
+dependencies are never undefined, as long as the input is processed from
+top to bottom:
 
 ```
 123 -> x
