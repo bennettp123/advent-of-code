@@ -32,6 +32,29 @@ group_strings = [
         '{{<a>},{<a>},{<a>},{<a>}}',
         '{{<!>},{<!>},{<!>},{<a>}}']
 
+
+def get_testmethod(s):
+    def testmethod(self):
+        expected_startpos = 0
+        expected_endpos = len(s) - 1
+        actual_startpos, actual_endpos, _, _ = garbage.process(s)
+        self.assertEqual(expected_startpos, actual_startpos)
+        self.assertEqual(expected_endpos, actual_endpos)
+    return testmethod
+
+
+for n in range(len(garbage_strings)):
+    s = garbage_strings[n]
+    testmethod = get_testmethod(s)
+    testmethod.__name__ = 'test_process_garbage_{0}'.format(n)
+    setattr(GarbageTests, testmethod.__name__, testmethod)
+
+for n in range(len(group_strings)):
+    s = group_strings[n]
+    testmethod = get_testmethod(s)
+    testmethod.__name__ = 'test_process_group_{0}'.format(n)
+    setattr(GroupTests, testmethod.__name__, testmethod)
+
 groups_with_scores = [
         ('{}', 1),
         ('{{{}}}', 6),
@@ -43,41 +66,47 @@ groups_with_scores = [
         ('{{<a!>},{<a!>},{<a!>},{<ab>}}', 3)]
 
 
-def get_testmethod(s):
-    def test_process(self):
-        expected_startpos = 0
-        expected_endpos = len(s) - 1
-        actual_startpos, actual_endpos, _ = garbage.process(s)
-        self.assertEqual(expected_startpos, actual_startpos)
-        self.assertEqual(expected_endpos, actual_endpos)
-    return test_process
-
-
-for n in range(len(garbage_strings)):
-    s = garbage_strings[n]
-    test_method = get_testmethod(s)
-    test_method.__name__ = 'test_process_garbage_{0}'.format(n)
-    setattr(GarbageTests, test_method.__name__, test_method)
-
-for n in range(len(group_strings)):
-    s = group_strings[n]
-    test_method = get_testmethod(s)
-    test_method.__name__ = 'test_process_group_{0}'.format(n)
-    setattr(GroupTests, test_method.__name__, test_method)
-
-
 def get_testmethod_with_score(s, expected_score):
-    def test_process(self):
-        _, _, actual_score = garbage.process(s)
+    def testmethod(self):
+        _, _, actual_score, _ = garbage.process(s)
         self.assertEqual(expected_score, actual_score)
-    return test_process
+    return testmethod
 
 
 for n in range(len(groups_with_scores)):
     group, expected_score = groups_with_scores[n]
-    test_method = get_testmethod_with_score(group, expected_score)
-    test_method.__name__ = 'test_process_group_with_score_{0}'.format(n)
-    setattr(GroupTests, test_method.__name__, test_method)
+    testmethod = get_testmethod_with_score(group, expected_score)
+    testmethod.__name__ = 'test_process_group_with_score_{0}'.format(n)
+    setattr(GroupTests, testmethod.__name__, testmethod)
+
+
+garbage_counts = [
+        ('<>', 0),
+        ('<random characters>', 17),
+        ('<<<<>', 3),
+        ('<{!>}>', 2),
+        ('<!!>', 0),
+        ('<!!!>>', 0),
+        ('<{o"i!a,<{i<a>', 10),
+        ('{<>}', 0),
+        ('{<a>}', 1),
+        ('{{{{<a>}}}}', 1),
+        ('{{<{o"i!a,<{i<a>}}', 10)]
+
+
+def get_testmethod_with_garbage_count(s, expected_garbage):
+    def testmethod(self):
+        _, _, _, actual_garbage = garbage.process(s)
+        self.assertEqual(expected_garbage, actual_garbage)
+    return testmethod
+
+
+for n in range(len(garbage_counts)):
+    s, expected_gargbage = garbage_counts[n]
+    testmethod = get_testmethod_with_garbage_count(s, expected_gargbage)
+    testmethod.__name__ = 'test_process_garbage_with_score_{0}'.format(n)
+    setattr(GarbageTests, testmethod.__name__, testmethod)
+
 
 if __name__ == '__main__':
     unittest.main()
