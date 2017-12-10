@@ -26,4 +26,6 @@ use regex for everything, but I've left it with a mix becuase:
 
 1. it works, and
 2. it permits expressions like `x AND NOT y` or `x AND y OR z`, which are
-   undefined in the requirements.
+   undefined in the requirements. However, these expressions will probably
+   need to be pre-ordered to ensure dependencies are met, since the regex
+   does not handle these extensions.
