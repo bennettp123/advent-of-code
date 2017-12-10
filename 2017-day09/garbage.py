@@ -1,49 +1,48 @@
 #!/usr/bin/env python
 
+score = 0
 
-backing = []
-
-
-class Garbage(object):
-    def __init__(self):
-        self.val = None
-
-    @staticmethod
-    def is_selfcontained(s):
-        if not s.startswith('<'):
-            return False
-        if not s.endswith('>'):
-            return False
-        if s.endswith('!>'):
-            return False
-
-
-class Group(object):
-    def __init__(self):
-        self.children = []
-        self.val = None
-
-    @staticmethod
-    def is_selfcontained(s):
-        if not s.startswith('{'):
-            return False
-        # TODO finish this
-
-def next_thing(f):
-    o = {}
-    group = ''
-    for line in f:
-        for char in line:
-            if garbage:
-            else:
-                if char = '{'
-                    group += char
-    # TODO finish this
-
-
+def process(s, depth=0):
+    if s.startswith('<'):
+        # garbage
+        pos = 0
+        while True:
+            pos += 1
+            if s[pos] == '!':
+                # skip next char
+                pos += 1
+                continue
+            if s[pos] == '>':
+                endpos = pos
+                return 0, endpos, 0
+    if s.startswith('{'):
+        # group
+        score = depth + 1
+        pos = 0
+        while True:
+            pos += 1
+            if s[pos] == '!':
+                # skip next char
+                pos += 1
+                continue
+            if s[pos] == '<':
+                pos = pos + process(s[pos:])[1]
+                continue
+            if s[pos] == '{':
+                _, pos_delta, score_delta = process(s[pos:], depth=depth+1)
+                pos += pos_delta
+                score += score_delta
+                continue
+            if s[pos] == '}':
+                endpos = pos
+                return 0, endpos, score
 
 
 if __name__ == '__main__':
+    totalscore = 0
     with open('input', 'r') as f:
-        for o in next_thing(f):
+        for line in f:
+            _, _, score = process(line)
+
+    print('part 1: total group score is {0}'.format(totalscore))
 
