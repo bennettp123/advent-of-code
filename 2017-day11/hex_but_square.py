@@ -26,7 +26,7 @@ if __name__ == '__main__':
                 maxd = max(maxd, shortest_distance_to_origin((x, y)))
 
     print('part 1: shortest path to origin from {0}, {1} has distance {2}'
-            .format(xpos, ypos, shortest_distance_to_origin((x, y))))
+            .format(x, y, shortest_distance_to_origin((x, y))))
 
     print('part 2: maximum shortest path to origin had distance {0}'
             .format(maxd))
