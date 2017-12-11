@@ -14,7 +14,7 @@ def move(x, y, d):
 def shortest_distance_to_origin(pos):
     x, y = pos
     if x < 0 and y < 0: x, y = abs(x), abs(y)
-    if x > 0 and y > 0: return min(x, y) + max(x, y) - min(x, y)
+    if x > 0 and y > 0: return max(x, y)
     else: return x + y
 
 
