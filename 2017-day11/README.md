@@ -5,6 +5,7 @@ except in addition to moving N/S/E/W, you can also move diagonally NE/SW.
 
 More details [here](https://gamedev.stackexchange.com/questions/44812/finding-shortest-path-on-a-hexagonal-grid).
 
+
 # What the user sees: hex grid
 
 ```
@@ -17,13 +18,14 @@ sw +--+ se
   / s  \
 ```
 
+
 # Internal representation: square grid
 
 ```
    | n | ne
- --+---+--
+---+---+---
 nw |   | se
- --+---+--
+---+---+---
 sw | s |
 ```
 
