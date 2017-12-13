@@ -23,11 +23,13 @@ if __name__ == '__main__':
     nodes = set(reduce(lambda x, y: x + [y[0], y[1]], edges, []))
 
     smallest_cost = sys.maxsize
+    largest_cost = ~ sys.maxsize
 
     for path in itertools.permutations(nodes):
 
         possible = True
-        path_cost = 0
+        min_path_cost = 0
+        max_path_cost = 0
 
         for n1, n2 in pairwise(path):
 
@@ -41,11 +43,16 @@ if __name__ == '__main__':
                 possible = False
                 break
 
-            path_cost += min(costs)
+            min_path_cost += min(costs)
+            max_path_cost += max(costs)
 
         if possible:
-            smallest_cost = min(smallest_cost, path_cost)
+            smallest_cost = min(smallest_cost, min_path_cost)
+            largest_cost = max(largest_cost, max_path_cost)
 
     print('part 1: shortest path through all nodes is {0}'
             .format(smallest_cost))
+
+    print('part 2: longest path through all nodes is {0}'
+            .format(largest_cost))
 
