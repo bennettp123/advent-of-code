@@ -20,6 +20,7 @@ if __name__ == '__main__':
         for line in f:
             edges += [regex.match(line).groups()]
 
+    # Get a list of all nodes in the graph
     nodes = set(reduce(lambda x, y: x + [y[0], y[1]], edges, []))
 
     smallest_cost = sys.maxsize
@@ -33,12 +34,15 @@ if __name__ == '__main__':
 
         for n1, n2 in pairwise(path):
 
-            # get the shortest path between these two nodes
+            # 1. Assume these nodes are directly connected.
+
+            # 2. Get the cost for these two directly connected nodes
             costs = [int(e[2]) for e in edges
                         if n1 in (e[0], e[1])
                         and n2 in (e[0], e[1])]
 
-            # ignore path unless node pairs are directly connected
+            # 3. If there is no cost for these nodes, then they are not
+            #    directly connected. Ignore this path.
             if not len(costs):
                 possible = False
                 break
